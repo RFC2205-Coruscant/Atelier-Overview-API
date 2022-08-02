@@ -348,3 +348,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+sdc-key.pem
+ubuntu@ec2-18-117-220-97.us-east-2.compute.amazonaws.com
+.env
