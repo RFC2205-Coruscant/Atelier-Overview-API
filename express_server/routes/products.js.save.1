@@ -1,0 +1,49 @@
+var {getRecord, getFeature, getStyle, getPhoto, getSku, getRelated, getFeatureAgg, getStyleAgg} = require('../db/index.js');
+var express = require('express');
+var router = express.Router();
+
+/* GET home page. */
+router.get('/', async function(req, res, next) {
+  const page = req.query.page || 1;
+  const count = req.query.count || 5;
+  const record = await getRecord((page - 1) * count, count);
+  res.status(200).send(record)
+});
+
+
+router.get('/:product_id', async function(req, res, next) {
+  // const [product] = await getRecord(0,0,req.params.product_id)
+  // var feature = await getFeature(req.params.product_id);
+  // feature = feature.map( obj => {return {'feature': obj.feature, 'value': obj.value}})
+  // product.features = feature
+  // res.status(200).send(product);
+  const featureAgg = await getFeatureAgg(req.params.product_id)
+  res.status(200).send(featureAgg);
+});
+
+
+router.get('/:product_id/styles', async function(req, res, next) {
+  // var style = await getStyle(req.params.product_id);
+  // style = style.map(async (singleStyle) => {
+    // var skus = await getSku(singleStyle.style_id);
+    // var newSkus = {}
+    // skus.forEach((sku) => {
+      // newSkus[sku.id] = {size:sku.size, quantity:sku.quantity}
+    // })
+    // return {...singleStyle, photos: await getPhoto(singleStyle.style_id), skus: newSkus}
+  // });
+  // const updateStyle = await Promise.all(style);
+  // res.status(200).send({product_id: req.params.product_id, results: updateStyle});
+  
+});
+
+router.get('/:product_id/related', async function(req, res, next) {
+  var relatedId = await getRelated(req.params.product_id);
+  relatedId = relatedId.map((singleObj) => {
+    return Object.values(singleObj)[0]
+  })
+  res.status(200).send(relatedId);
+});
+
+
+module.exports = router;

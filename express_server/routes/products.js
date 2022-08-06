@@ -1,4 +1,4 @@
-var {getRecord, getFeature, getStyle, getPhoto, getSku, getRelated} = require('../db/index.js');
+var {getRecord, getFeature, getStyle, getPhoto, getSku, getRelated, getFeatureAgg, getStyleAgg} = require('../db/index.js');
 var express = require('express');
 var router = express.Router();
 
@@ -12,12 +12,13 @@ router.get('/', async function(req, res, next) {
 
 
 router.get('/:product_id', async function(req, res, next) {
-  console.log('checking!!!', req.params.product_id)
   const [product] = await getRecord(0,0,req.params.product_id)
   var feature = await getFeature(req.params.product_id);
   feature = feature.map( obj => {return {'feature': obj.feature, 'value': obj.value}})
   product.features = feature
   res.status(200).send(product);
+  // const featureAgg = await getFeatureAgg(req.params.product_id)
+  // res.status(200).send(featureAgg);
 });
 
 
@@ -32,9 +33,9 @@ router.get('/:product_id/styles', async function(req, res, next) {
     return {...singleStyle, photos: await getPhoto(singleStyle.style_id), skus: newSkus}
   });
   const updateStyle = await Promise.all(style);
-  console.log('output', {product_id: req.params.product_id, results: updateStyle})
   res.status(200).send({product_id: req.params.product_id, results: updateStyle});
-
+  // const style1 = await getStyleAgg(req.params.product_id);
+  // res.status(200).send(style1)
 });
 
 router.get('/:product_id/related', async function(req, res, next) {

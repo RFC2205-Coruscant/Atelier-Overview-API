@@ -14,7 +14,6 @@ var productsRouter = require('./routes/products');
 var app = express();
 app.use(cors());
 
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -34,6 +33,8 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
+
+
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
@@ -45,6 +46,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// app.listen(process.env.PORT);
+
+port = process.env.PORT || 3004
+app.listen(port, function () {
+  console.log(`app listening on port ${port}!`);
+ });
 
 module.exports = app;

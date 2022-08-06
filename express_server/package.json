@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
+    "aws": "node ./app.js",
     "reset": "psql -U postgres -W -f schema.sql"
   },
   "dependencies": {
